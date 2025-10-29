@@ -19,16 +19,16 @@ jobs:
           ref: ${{ github.sha }}
      
       - name: docker build images
-        run: docker build . --file dataarchaive/Dockerfile -t test:${{ github.sha }}
+        run: docker build . --file dataarchaive/Dockerfile -t test-${{ github.sha }}
       - name: Save the docker image
         run: |
-          docker save test:${{ github.sha }} > /tmp/test:${{ github.sha }}.tar
+          docker save test:${{ github.sha }} > /tmp/test-${{ github.sha }}.tar
           ls -la /tmp/
       - name: upload image on artifect
         uses: actions/upload-artifact@v4
         with:
           name: test-image
-          path:  /tmp/test:${{ github.sha }}.tar
+          path:  /tmp/test-${{ github.sha }}.tar
           retain-days: 2   
           if-no-files-found: error   
   test:
@@ -43,13 +43,13 @@ jobs:
      - name: Set up Docker
        uses: docker/setup-buildx-action@v3
      - name: Load image
-       run: docker load < /tmp/test:${{ github.sha }}.tar
+       run: docker load < /tmp/test-${{ github.sha }}.tar
 
      - name: visualize the image
        run: | 
           docker images
           docker ps -a
-          docker run -d -p 8080:80 test:${{ github.sha }}
+          docker run -d -p 8080:80 test-${{ github.sha }}
           docker stop $(docker ps -q)
 
       # - name: Checking runnning container 
