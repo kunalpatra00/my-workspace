@@ -20,9 +20,28 @@ jobs:
      
       - name: docker build images
         run: docker build . --file dataarchaive/Dockerfile -t test:${{ github.sha }}
+      - name: Save the docker image
+        run: docker save test:${{ github.sha }} > /tmp/test:${{ github.sha }}.tar
+      - name: upload image on artifect
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-image
+          path:  test:${{ github.sha }}.tar
+          retain-days: 2      
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+     - name: Download docker image from artifect
+       uses: actions/download-artifact@v4
+       with:
+        name: test-image
+        path: /tmp/
+     - name: Load image
+       run: docker load < /tmp/test:${{ github.sha }}.tar
 
-      - name: visualize the image
-        run: | 
+     - name: visualize the image
+       run: | 
           docker images
           docker ps -a
           docker run -d -p 8080:80 test:${{ github.sha }}
