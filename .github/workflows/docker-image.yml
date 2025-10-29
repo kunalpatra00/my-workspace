@@ -1,10 +1,10 @@
 name: docker image build
 on:
   push:
-    branches: [ "main, uat, developmet" ]
-      pull_request: [ "main, uat, developmet" ]
-      push: [ "main, uat, developmet" ]
-      marged: [ "main, uat, developmet" ]
+    branches: [ "main", "uat", "developmet" ]
+  pull_request: 
+    branches: [ "main", "uat", "developmet" ]
+
 
 
 jobs:
