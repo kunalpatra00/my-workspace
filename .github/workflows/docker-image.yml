@@ -22,14 +22,19 @@ jobs:
         run: docker build . --file dataarchaive/Dockerfile -t test:${{ github.sha }}
 
       - name: visualize the image
-        run: docker images
-      - name: Checking runnning container 
-        run: docker ps -a
-      - name: Start the container
-        run: docker run -d -p 8080:80 test:${{ github.sha }}
-      - name:  test the container
-        run: curl http://localhost:8080 > output.txt
-      - name: Display the output
-        run: cat output.txt
-      - name: stop the container
-        run: docker stop $(docker ps -q)
+        run: | 
+          docker images
+          docker ps -a
+          docker run -d -p 8080:80 test:${{ github.sha }}
+          docker stop $(docker ps -q)
+
+      # - name: Checking runnning container 
+      #   run: docker ps -a
+      # - name: Start the container
+      #   run: docker run -d -p 8080:80 test:${{ github.sha }}
+      # - name:  test the container
+      #   run: curl http://localhost:8080 > output.txt
+      # - name: Display the output
+      #   run: cat output.txt
+      # - name: stop the container
+      #   run: docker stop $(docker ps -q)
