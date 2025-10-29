@@ -22,7 +22,7 @@ jobs:
         run: docker build . --file dataarchaive/Dockerfile -t test-${{ github.sha }}
       - name: Save the docker image
         run: |
-          docker save test:${{ github.sha }} > /tmp/test-${{ github.sha }}.tar
+          docker save test-${{ github.sha }} > /tmp/test-${{ github.sha }}.tar
           ls -la /tmp/
       - name: upload image on artifect
         uses: actions/upload-artifact@v4
