@@ -10,19 +10,23 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env: 
+      COMMIT_SHA: ${{ github.sha }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+        with:
+          ref: ${{ github.sha }}
+     
       - name: docker build images
-        run: docker build . --file dataarchaive/Dockerfile -t test:latest
+        run: docker build . --file dataarchaive/Dockerfile -t test:${{ github.sha }}
 
       - name: visualize the image
         run: docker images
       - name: Checking runnning container 
         run: docker ps -a
       - name: Start the container
-        run: docker run -d -p 8080:80 test:latest
+        run: docker run -d -p 8080:80 test:${{ github.sha }}
       - name:  test the container
         run: curl http://localhost:8080 > output.txt
       - name: Display the output
