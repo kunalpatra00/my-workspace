@@ -1,18 +1,16 @@
-name: Docker Image CI
-
+name: docker image build
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "main, uat, developmet" ]
+      pull_request: [ "main, uat, developmet" ]
+      push: [ "main, uat, developmet" ]
+      marged: [ "main, uat, developmet" ]
+
 
 jobs:
-
   build:
-
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu:24.04
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file dataarchaive/Dockerfile --tag my-image-name:$(date +%s)
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        run: docker build . --file dataarchaive/Dockerfile -t lates:$(date +%s)
