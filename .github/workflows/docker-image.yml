@@ -13,4 +13,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        
+      - name: docker build images
         run: docker build . --file dataarchaive/Dockerfile -t lates:$(date +%s)
